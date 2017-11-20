@@ -36,7 +36,7 @@ const model = {
     },
 
     _contains(array, value) {
-        return array.any((val) => {
+        return array.some((val) => {
             return value === val;
         });
     },
