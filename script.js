@@ -31,7 +31,13 @@ const model = {
         const modelValues = this.messages[prop];
 
         modelValues.forEach((modelVal) => {
-            modelVal.selected = values.contains(modelVal.value);
+            modelVal.selected = this._contains(values, modelVal.value);
+        });
+    },
+
+    _contains(array, value) {
+        return array.any((val) => {
+            return value === val;
         });
     },
 
