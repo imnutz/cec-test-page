@@ -9,6 +9,7 @@ const model = {
     saleRepKey: 'label.owner.id.name',
     stageNameKey: 'label.stage.name.stagename',
     activityTypeKey: 'label.activity.activitytype',
+    allOption: 'GDC_SELECT_ALL',
 
     present(proposal) {
         if (proposal.receivedMessage) {
@@ -35,7 +36,9 @@ const model = {
         });
     },
 
-    _contains(array, value) {
+    _contains(array = [], value) {
+        if (array.length === 1 && array[0] === this.allOption) return true;
+
         return array.some((val) => {
             return value === val;
         });
