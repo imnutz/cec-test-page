@@ -2,6 +2,14 @@
     display: flex;
 }
 
+.container .widget {
+    flex-basis: 120px;
+}
+
+.container .widget select {
+    width: 100%;
+}
+
 .container .widget:not(:first-child) {
     margin-left: 10px;
 }

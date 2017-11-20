@@ -9,6 +9,7 @@ const model = {
     saleRepKey: 'label.owner.id.name',
     stageNameKey: 'label.stage.name.stagename',
     activityTypeKey: 'label.activity.activitytype',
+    yearCreatedKey: 'created.aag81lMifn6q',
     allOption: 'GDC_SELECT_ALL',
 
     present(proposal) {
@@ -80,6 +81,14 @@ const model = {
 
     getActivityTypeKey() {
         return this.activityTypeKey;
+    },
+
+    getYearCreatedKey() {
+        return this.yearCreatedKey;
+    },
+
+    getYearCreatedData() {
+        return this.messages[this.yearCreatedKey];
     }
 };
 
@@ -102,9 +111,15 @@ const state = {
             clazz: model.getActivityTypeKey(),
             size: 10,
             options: model.getActivityTypeData()
+        },
+        yearCreatedData = {
+            name: 'yearCreated',
+            clazz: model.getYearCreatedKey(),
+            size: 10,
+            options: model.getYearCreatedData()
         };
 
-        const page = this.view.page({ saleRepData, stageNameData, activityTypeData });
+        const page = this.view.page({ saleRepData, stageNameData, activityTypeData, yearCreatedData });
 
         this.view.render(page);
     }
@@ -145,7 +160,7 @@ const view = {
         `;
     },
 
-    page({ saleRepData, stageNameData, activityTypeData }) {
+    page({ saleRepData, stageNameData, activityTypeData, yearCreatedData }) {
         return html`
             <div class="container">
                 <div class="widget">
@@ -159,6 +174,11 @@ const view = {
                 <div class="widget">
                     <h3>Activity Type</h3>
                     ${this.createFilter(activityTypeData)}
+                </div>
+
+                <div class="widget">
+                    <h3>Year (Created)</h3>
+                    ${this.createFilter(yearCreatedData)}
                 </div>
             </div>
         `;
