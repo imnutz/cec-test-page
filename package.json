@@ -1,0 +1,26 @@
+{
+  "name": "cec-test-page",
+  "version": "1.0.0",
+  "description": "Test page for Control Execution Context",
+  "main": "script.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imnutz/cec-test-page.git"
+  },
+  "author": "sondo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imnutz/cec-test-page/issues"
+  },
+  "homepage": "https://github.com/imnutz/cec-test-page#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "lit-html": "^0.7.1",
+    "webpack": "^3.8.1"
+  }
+}
