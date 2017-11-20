@@ -30,10 +30,8 @@ const model = {
 
         const modelValues = this.messages[prop];
 
-        values.forEach((val) => {
-            modelValues.forEach((modelVal) => {
-                modelVal.selected = modelVal.value === val;
-            });
+        modelValues.forEach((modelVal) => {
+            modelVal.selected = values.contains(modelVal.value);
         });
     },
 
@@ -104,10 +102,11 @@ const state = {
 };
 
 const action = {
-    onMessage(data) {
-        console.log(data);
+    onMessage(message) {
+        const jsonData = JSON.parse(message.data);
+
         this.present({
-            receivedMessage: data
+            receivedMessage: jsonData
         })
     },
 
