@@ -10,6 +10,10 @@ module.exports = {
 
     devtool: "source-map",
 
+    devServer: {
+        port: 3000
+    },
+
     module: {
         rules: [
             {

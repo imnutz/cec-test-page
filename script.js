@@ -105,6 +105,7 @@ const state = {
 
 const action = {
     onMessage(data) {
+        console.log(data);
         this.present({
             receivedMessage: data
         })
@@ -140,12 +141,15 @@ const view = {
         return html`
             <div class="container">
                 <div class="widget">
+                    <h3>Sale Rep</h3>
                     ${this.createFilter(saleRepData)}
                 </div>
                 <div class="widget">
+                    <h3>Stage Name</h3>
                     ${this.createFilter(stageNameData)}
                 </div>
                 <div class="widget">
+                    <h3>Activity Type</h3>
                     ${this.createFilter(activityTypeData)}
                 </div>
             </div>
