@@ -15,11 +15,10 @@ const model = {
 
     present(proposal) {
         if (proposal.receivedMessage) {
+            this.formattedMessage = JSON.stringify(proposal.receivedMessage, null, 2);
+
             const receivedData = proposal.receivedMessage.gdc.setFilterContext || [];
-
             const parsedMessages = this.parseMessage(receivedData);
-
-            this.formattedMessage = JSON.stringify(receivedData, null, 2);
 
             const keys = Object.keys(parsedMessages);
             keys.forEach((key) => {
