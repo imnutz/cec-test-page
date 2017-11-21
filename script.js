@@ -186,6 +186,7 @@ const view = {
                 </div>
             </div>
             <div class="data">
+                <h3>Log</h3>
                 <pre>${formattedMessage}</pre>
             </div>
         `;
