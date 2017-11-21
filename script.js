@@ -5,6 +5,7 @@ import data from './data';
 
 const model = {
     messages: data,
+    formattedMessage: null,
 
     saleRepKey: 'label.owner.id.name',
     stageNameKey: 'label.stage.name.stagename',
@@ -17,6 +18,8 @@ const model = {
             const receivedData = proposal.receivedMessage.gdc.setFilterContext || [];
 
             const parsedMessages = this.parseMessage(receivedData);
+
+            this.formattedMessage = JSON.stringify(receivedData, null, 2);
 
             const keys = Object.keys(parsedMessages);
             keys.forEach((key) => {
@@ -117,9 +120,10 @@ const state = {
             clazz: model.getYearCreatedKey(),
             size: 10,
             options: model.getYearCreatedData()
-        };
+        },
+        formattedMessage = model.formattedMessage;
 
-        const page = this.view.page({ saleRepData, stageNameData, activityTypeData, yearCreatedData });
+        const page = this.view.page({ saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage });
 
         this.view.render(page);
     }
@@ -160,7 +164,7 @@ const view = {
         `;
     },
 
-    page({ saleRepData, stageNameData, activityTypeData, yearCreatedData }) {
+    page({ saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
         return html`
             <div class="container">
                 <div class="widget">
@@ -180,6 +184,9 @@ const view = {
                     <h3>Year (Created)</h3>
                     ${this.createFilter(yearCreatedData)}
                 </div>
+            </div>
+            <div class="data">
+                <pre>${formattedMessage}</pre>
             </div>
         `;
     },
