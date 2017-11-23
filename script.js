@@ -151,7 +151,9 @@ const state = {
         formattedMessage = model.formattedMessage;
 
         if (model.broadcast) {
-            window.top.postMessage(JSON.stringify(model.changes), '*');
+            if (window.parent) {
+                window.parent.postMessage(JSON.stringify(model.changes), '*');
+            }
         } else {
             const page = this.view.page(
                 this.action.send.bind(this.action),
