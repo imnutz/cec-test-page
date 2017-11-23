@@ -306,7 +306,7 @@ const view = {
             : '';
         return html`
             <div class="container">
-                <h2>Custom widget - Sale Rep</h2>
+                <h2>Custom widget - Year (Created)</h2>
                 <div class="widget">
                     ${this.createFilter(action.selectedChange.bind(action), saleRepData)}
                 </div>
