@@ -35,7 +35,7 @@ const model = {
         }
 
         if (proposal.selectedValue) {
-            this._updateModelProp(proposal.selectedValue.filterId, [ proposal.selectedValue.value ]);
+            this._updateModelProp(proposal.selectedValue.filterId, proposal.selectedValue.values);
         }
 
         this.represent(this);
@@ -198,9 +198,9 @@ const action = {
         });
     },
 
-    selectedChange(filterId, value) {
+    selectedChange(filterId, values) {
         this.present({
-            selectedValue: { filterId, value }
+            selectedValue: { filterId, values }
         });
     },
 
@@ -226,7 +226,11 @@ const view = {
 
     createFilter(changeAction, { name, clazz, size, options }) {
         const changeHandler = (e) => {
-            changeAction(clazz, e.target.value);
+            const saleRepEle = document.querySelector('[name="saleRep"]');
+            const selectedValues = [...saleRepEle.selectedOptions]
+                                        .map((opt) => opt.value);
+
+            changeAction(clazz, selectedValues);
         }
         return html`
             <select name=${name} class$=${clazz} multiple size=${size} on-change=${changeHandler}>
