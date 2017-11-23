@@ -205,9 +205,9 @@ const view = {
         let optElem;
 
         if (data.selected) {
-            optElem = html`<option value=${data.value} selected>${data.value}</option>`;
+            optElem = html`<option value=${data.value} selected="true">${data.value}</option>`;
         } else {
-            optElem = html`<option value=${data.value}>${data.value}</option>`;
+            optElem = html`<option value=${data.value} selected="false">${data.value}</option>`;
         }
 
         return optElem;
