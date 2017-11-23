@@ -239,10 +239,6 @@ const view = {
             <div class="btns">
                 <button on-click="${sendHandler}">Send</button>
             </div>
-            <div class="data">
-                <h3>Log</h3>
-                <pre>${formattedMessage}</pre>
-            </div>
         `;
     },
 
