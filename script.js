@@ -34,6 +34,10 @@ const model = {
             this.changes = this.composeMessage(filterId, options);
         }
 
+        if (proposal.selectedValue) {
+            this._updateModelProp(proposal.selectedValue.filterId, [ proposal.selectedValue.value ]);
+        }
+
         this.represent(this);
     },
 
@@ -156,6 +160,7 @@ const state = {
             }
         } else {
             const page = this.view.page(
+                this.action.selectedChange.bind(this.action),
                 this.action.send.bind(this.action),
                 { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }
             );
@@ -193,6 +198,12 @@ const action = {
         });
     },
 
+    selectedChange(filterId, value) {
+        this.present({
+            selectedValue: { filterId, value }
+        });
+    },
+
     broadcastDone() {
         this.present({
             broadcast: false
@@ -213,27 +224,29 @@ const view = {
         return optElem;
     },
 
-    createFilter({ name, clazz, size, options }) {
+    createFilter(changeAction, { name, clazz, size, options }) {
+        const changeHandler = (e) => {
+            changeAction(clazz, e.target.value);
+        }
         return html`
-            <select name=${name} class$=${clazz} multiple size=${size}>
+            <select name=${name} class$=${clazz} multiple size=${size} on-change=${changeHandler}>
                 ${ options.map(this.createFilterOption) }
              </select>
         `;
     },
 
-    page(sendAction, { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
+    page(changeAction, sendAction, { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
         const sendHandler = (e) => {
             const saleRepEle = document.querySelector('[name="saleRep"]');
-            const selectedOptions = [...saleRepEle.options]
-                                        .filter((opt) => opt.selected)
+            const selectedValues = [...saleRepEle.selectedOptions]
                                         .map((opt) => opt.value);
-            sendAction(saleRepData.clazz, selectedOptions);
+            sendAction(saleRepData.clazz, selectedValues);
         }
         return html`
             <div class="container">
                 <h2>Custom widget - Sale Rep</h2>
                 <div class="widget">
-                    ${this.createFilter(saleRepData)}
+                    ${this.createFilter(changeAction, saleRepData)}
                 </div>
             </div>
             <div class="btns">
