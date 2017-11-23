@@ -240,11 +240,11 @@ const view = {
     },
 
     page(changeAction, sendAction, { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
-        const sendHandler = (e) => {
-            const saleRepEle = document.querySelector(`[name="${saleRepData.name}"]`);
-            const selectedValues = [...saleRepEle.selectedOptions]
+        const sendHandler = (data, e) => {
+            const selectElement = document.querySelector(`[name="${data.name}"]`);
+            const selectedValues = [...selectElement.selectedOptions]
                                         .map((opt) => opt.value);
-            sendAction(saleRepData.clazz, selectedValues);
+            sendAction(data.clazz, selectedValues);
         }
         return html`
             <div class="container">
@@ -254,7 +254,7 @@ const view = {
                 </div>
             </div>
             <div class="btns">
-                <button on-click="${sendHandler}">Send</button>
+                <button on-click="${sendHandler.bind(null, saleRepData)}">Send</button>
             </div>
         `;
     },
