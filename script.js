@@ -226,7 +226,7 @@ const view = {
 
     createFilter(changeAction, { name, clazz, size, options }) {
         const changeHandler = (e) => {
-            const saleRepEle = document.querySelector('[name="saleRep"]');
+            const saleRepEle = document.querySelector(`[name="${name}"]`);
             const selectedValues = [...saleRepEle.selectedOptions]
                                         .map((opt) => opt.value);
 
@@ -241,7 +241,7 @@ const view = {
 
     page(changeAction, sendAction, { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
         const sendHandler = (e) => {
-            const saleRepEle = document.querySelector('[name="saleRep"]');
+            const saleRepEle = document.querySelector(`[name="${saleRepData.name}"]`);
             const selectedValues = [...saleRepEle.selectedOptions]
                                         .map((opt) => opt.value);
             sendAction(saleRepData.clazz, selectedValues);
