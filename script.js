@@ -6,6 +6,7 @@ import data from './data';
 const model = {
     messages: data,
     formattedMessage: null,
+    changes: null,
 
     saleRepKey: 'label.owner.id.name',
     stageNameKey: 'label.stage.name.stagename',
@@ -14,6 +15,8 @@ const model = {
     allOption: 'GDC_SELECT_ALL',
 
     present(proposal) {
+        this.broadcast = proposal.broadcast;
+
         if (proposal.receivedMessage) {
             this.formattedMessage = JSON.stringify(proposal.receivedMessage, null, 2);
 
@@ -24,6 +27,11 @@ const model = {
             keys.forEach((key) => {
                 this._updateModelProp(key, parsedMessages[key]);
             });
+        }
+
+        if (this.broadcast) {
+            const { filterId, options } = proposal.value;
+            this.changes = this.composeMessage(filterId, options);
         }
 
         this.represent(this);
@@ -59,6 +67,26 @@ const model = {
 
             return acc;
         }, {});
+    },
+
+    composeMessage(filterId, options) {
+        const data = {
+            gdc: {
+                name: "filter.value.changed",
+                type: "app.ok"
+            }
+        };
+
+        const changes = options.map((opt) => {
+            return {
+                label: filterId,
+                value: opt
+            };
+        })
+
+        data.gdc.data = changes;
+
+        return data;
     },
 
     getSaleRepData() {
@@ -122,9 +150,24 @@ const state = {
         },
         formattedMessage = model.formattedMessage;
 
-        const page = this.view.page({ saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage });
+        if (model.broadcast) {
+            window.top.postMessage(JSON.stringify(model.changes), '*');
+        } else {
+            const page = this.view.page(
+                this.action.send.bind(this.action),
+                { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }
+            );
 
-        this.view.render(page);
+            this.view.render(page);
+        }
+
+        this.nextAtion(model);
+    },
+
+    nextAtion(model) {
+        if (model.broadcast) {
+            this.action.broadcastDone();
+        }
     }
 };
 
@@ -139,6 +182,19 @@ const action = {
 
     init() {
         this.present({});
+    },
+
+    send(filterId, options) {
+        this.present({
+            broadcast: true,
+            value: { filterId, options }
+        });
+    },
+
+    broadcastDone() {
+        this.present({
+            broadcast: false
+        });
     }
 };
 
@@ -163,26 +219,23 @@ const view = {
         `;
     },
 
-    page({ saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
+    page(sendAction, { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
+        const sendHandler = (e) => {
+            const saleRepEle = document.querySelector('[name="saleRep"]');
+            const selectedOptions = [...saleRepEle.options]
+                                        .filter((opt) => opt.selected)
+                                        .map((opt) => opt.value);
+            sendAction(saleRepData.clazz, selectedOptions);
+        }
         return html`
             <div class="container">
+                <h2>Custom widget - Sale Rep</h2>
                 <div class="widget">
-                    <h3>Sale Rep</h3>
                     ${this.createFilter(saleRepData)}
                 </div>
-                <div class="widget">
-                    <h3>Stage Name</h3>
-                    ${this.createFilter(stageNameData)}
-                </div>
-                <div class="widget">
-                    <h3>Activity Type</h3>
-                    ${this.createFilter(activityTypeData)}
-                </div>
-
-                <div class="widget">
-                    <h3>Year (Created)</h3>
-                    ${this.createFilter(yearCreatedData)}
-                </div>
+            </div>
+            <div class="btns">
+                <button on-click="${sendHandler}">Send</button>
             </div>
             <div class="data">
                 <h3>Log</h3>
@@ -207,6 +260,7 @@ function start() {
 
     state.render = view.render;
     state.view = view;
+    state.action = action;
 
     bindEvent(action);
 

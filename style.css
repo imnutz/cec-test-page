@@ -4,20 +4,32 @@ h3 {
     font-size: 14px;
 }
 
-.container {
-    display: flex;
+h2 {
+    margin: 0;
+    border-bottom: 2px solid red;
 }
 
-.container .widget {
-    flex-basis: 120px;
+.container {
+    display: flex;
+    flex-direction: column;
+    border: 3px solid red;
 }
 
 .container .widget select {
     width: 100%;
+    border: none;
 }
 
-.container .widget:not(:first-child) {
-    margin-left: 10px;
+.btns button {
+    outline: none;
+    padding: 10px;
+    width: 120px;
+    margin-top: 5px;
+    border-color: red;
+    border-style: none;
+    border: 2px solid red;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .data pre {
