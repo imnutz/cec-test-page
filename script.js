@@ -49,7 +49,7 @@ const model = {
     _updateModelProp(prop, values) {
         if (!values || !values.length) return;
 
-        const modelValues = this.messages[prop];
+        const modelValues = this.messages[prop] || [];
 
         modelValues.forEach((modelVal) => {
             modelVal.selected = this._contains(values, modelVal.value);
