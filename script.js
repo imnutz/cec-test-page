@@ -308,12 +308,12 @@ const view = {
             <div class="container">
                 <h2>Custom widget - Stage Name</h2>
                 <div class="widget">
-                    ${this.createFilter(action.selectedChange.bind(action), saleRepData)}
+                    ${this.createFilter(action.selectedChange.bind(action), stageNameData)}
                 </div>
             </div>
             <div class="btns">
-                <button on-click="${sendHandler.bind(null, saleRepData)}">Send</button>
-                <a href="#" on-click="${action.selectAll.bind(action, saleRepData.clazz)}">select all</a>
+                <button on-click="${sendHandler.bind(null, stageNameData)}">Send</button>
+                <a href="#" on-click="${action.selectAll.bind(action, stageNameData.clazz)}">select all</a>
                 <a href="#" on-click="${action.toggleLog.bind(action)}">view log</a>
             </div>
             ${logElement}
