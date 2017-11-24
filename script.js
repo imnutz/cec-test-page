@@ -7,6 +7,7 @@ const model = {
     messages: data,
     formattedMessage: null,
     changes: null,
+    showLog: false,
 
     saleRepKey: 'label.owner.id.name',
     stageNameKey: 'label.stage.name.stagename',
@@ -36,6 +37,10 @@ const model = {
 
         if (proposal.selectedValue) {
             this._updateModelProp(proposal.selectedValue.filterId, proposal.selectedValue.values);
+        }
+
+        if (proposal.toggleLog) {
+            this.showLog = !this.showLog;
         }
 
         this.represent(this);
@@ -152,7 +157,7 @@ const state = {
             size: 10,
             options: model.getYearCreatedData()
         },
-        formattedMessage = model.formattedMessage;
+        { formattedMessage, showLog } = model;
 
         if (model.broadcast) {
             if (window.parent) {
@@ -160,9 +165,15 @@ const state = {
             }
         } else {
             const page = this.view.page(
-                this.action.selectedChange.bind(this.action),
-                this.action.send.bind(this.action),
-                { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }
+                this.action,
+                {
+                    saleRepData,
+                    stageNameData,
+                    activityTypeData,
+                    yearCreatedData,
+                    formattedMessage,
+                    showLog
+                }
             );
 
             this.view.render(page);
@@ -208,6 +219,12 @@ const action = {
         this.present({
             broadcast: false
         });
+    },
+
+    toggleLog() {
+        this.present({
+            toggleLog: true
+        });
     }
 };
 
@@ -239,23 +256,34 @@ const view = {
         `;
     },
 
-    page(changeAction, sendAction, { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage }) {
+    page(action, { saleRepData, stageNameData, activityTypeData, yearCreatedData, formattedMessage, showLog }) {
         const sendHandler = (data, e) => {
             const selectElement = document.querySelector(`[name="${data.name}"]`);
             const selectedValues = [...selectElement.selectedOptions]
                                         .map((opt) => opt.value);
-            sendAction(data.clazz, selectedValues);
-        }
+            action.send.call(action, data.clazz, selectedValues);
+        };
+
+        const logElement = showLog ?
+            html`
+                <div class="data">
+                    <h3>Log</h3>
+                    <pre>${formattedMessage}</pre>
+                </div>
+            `
+            : '';
         return html`
             <div class="container">
                 <h2>Custom widget - Sale Rep</h2>
                 <div class="widget">
-                    ${this.createFilter(changeAction, saleRepData)}
+                    ${this.createFilter(action.selectedChange.bind(action), saleRepData)}
                 </div>
             </div>
             <div class="btns">
                 <button on-click="${sendHandler.bind(null, saleRepData)}">Send</button>
+                <a href="#" on-click="${action.toggleLog.bind(action)}">view log</a>
             </div>
+            ${logElement}
         `;
     },
 
