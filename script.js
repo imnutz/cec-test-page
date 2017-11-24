@@ -308,12 +308,12 @@ const view = {
             <div class="container">
                 <h2>Custom widget - Year (Created)</h2>
                 <div class="widget">
-                    ${this.createFilter(action.selectedChange.bind(action), saleRepData)}
+                    ${this.createFilter(action.selectedChange.bind(action), yearCreatedData)}
                 </div>
             </div>
             <div class="btns">
-                <button on-click="${sendHandler.bind(null, saleRepData)}">Send</button>
-                <a href="#" on-click="${action.selectAll.bind(action, saleRepData.clazz)}">select all</a>
+                <button on-click="${sendHandler.bind(null, yearCreatedData)}">Send</button>
+                <a href="#" on-click="${action.selectAll.bind(action, yearCreatedData.clazz)}">select all</a>
                 <a href="#" on-click="${action.toggleLog.bind(action)}">view log</a>
             </div>
             ${logElement}
