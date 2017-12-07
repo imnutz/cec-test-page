@@ -32,6 +32,7 @@ const model = {
 
         if (this.broadcast) {
             const { filterId, options } = proposal.value;
+
             this.changes = this.composeMessage(filterId, options);
         }
 
@@ -41,6 +42,10 @@ const model = {
 
         if (proposal.toggleLog) {
             this.showLog = !this.showLog;
+        }
+
+        if (proposal.selectedAllId) {
+            this._selectAll(proposal.selectedAllId);
         }
 
         this.represent(this);
@@ -62,6 +67,16 @@ const model = {
         return array.some((val) => {
             return value === val;
         });
+    },
+
+    _isAllItemsSelected(filterId) {
+        var data = this.messages[filterId] || [];
+
+        return data.every(opt => opt.selected);
+    },
+
+    _selectAll(filterId) {
+        (this.messages[filterId] || []).forEach(item => item.selected = true);
     },
 
     parseMessage(filters) {
@@ -86,14 +101,25 @@ const model = {
             }
         };
 
-        const changes = options.map((opt) => {
-            return {
-                label: filterId,
-                value: opt
-            };
-        })
+        if (this._isAllItemsSelected(filterId)) {
+            data.gdc.data = [
+                {
+                    label: filterId,
+                    value: this.allOption
+                }
+            ];
+        } else {
+            const changes = options.map((opt) => {
+                return {
+                    label: filterId,
+                    value: opt
+                };
+            });
 
-        data.gdc.data = changes;
+            data.gdc.data = changes;
+        }
+
+        console.log(data);
 
         return data;
     },
@@ -225,6 +251,12 @@ const action = {
         this.present({
             toggleLog: true
         });
+    },
+
+    selectAll(clazz) {
+        this.present({
+            selectedAllId: clazz
+        })
     }
 };
 
@@ -281,6 +313,7 @@ const view = {
             </div>
             <div class="btns">
                 <button on-click="${sendHandler.bind(null, saleRepData)}">Send</button>
+                <a href="#" on-click="${action.selectAll.bind(action, saleRepData.clazz)}">select all</a>
                 <a href="#" on-click="${action.toggleLog.bind(action)}">view log</a>
             </div>
             ${logElement}
