@@ -312,7 +312,7 @@ const view = {
                 </div>
             </div>
             <div class="btns">
-                <button on-click="${sendHandler.bind(null, saleRepData)}">Send</button>
+                <button on-click="${sendHandler.bind(null, activityTypeData)}">Send</button>
                 <a href="#" on-click="${action.selectAll.bind(action, activityTypeData.clazz)}">select all</a>
                 <a href="#" on-click="${action.toggleLog.bind(action)}">view log</a>
             </div>
