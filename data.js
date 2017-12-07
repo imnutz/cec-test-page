@@ -17,12 +17,15 @@ export default {
     ],
 
     'label.stage.name.stagename': [
-        { value: 'Interest' },
-        { value: 'Discovery' },
-        { value: 'Short List' },
-        { value: 'Risk Assessment' },
-        { value: 'Conviction' },
-        { value: 'Closed Won' }
+        {value : 'Interest'},
+        {value : 'Discovery'},
+        {value : 'Short List'},
+        {value : 'Risk Assessment'},
+        {value : 'Conviction'},
+        {value : 'Negotiation'},
+        {value : 'Closed Won'},
+        {value : 'Closed Lost'},
+        {value : 'N/A'}
     ],
 
     'label.activity.activitytype': [
